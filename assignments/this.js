@@ -50,7 +50,7 @@ let Pet = function(name, age) {
 
 let dog = new Pet("Jade", 3);
 console.log(dog);
-let cat = new newPet("Pete", 2);
+let cat = new Pet("Pete", 2);
 console.log(cat);
 
 // Principle 4

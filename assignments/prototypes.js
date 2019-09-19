@@ -16,15 +16,16 @@
   * destroy() // prototype method that returns: `${this.name} was removed from the game.`
 */
 
-function GameObject(gameAttributes){
-  this.newCreatedAt = attributes.createdAt,
-  this.newName = attributes.name,
-  this.newDimensions = attributes.dimensions
+class GameObject {
+  constructor(gameAttributes) {
+    this.createdAt = gameAttributes.createdAt;
+    this.name = gameAttributes.name;
+    this.dimensions = gameAttributes.dimensions;
+  }
+  destroy() {
+    return `${this.name} was removed from the game.`;
+  }
 }
-GameObject.prototype.destroy = function(){
-  return `${this.name} was removed from the game.`
-}
-
 /*
   === CharacterStats ===
   * healthPoints
@@ -32,11 +33,17 @@ GameObject.prototype.destroy = function(){
   * should inherit destroy() from GameObject's prototype
 */
 
-function CharacterStats(charAttributes){
-this.newHealthPoints= attributes.healthPoints,
-this.newTakeDamage = attributes.takeDamage,
-
+class CharacterStats extends GameObject {
+  constructor(charAttributes) {
+    super(charAttributes);
+    this.healthPoints = charAttributes.healthPoints;
+  }
+  takeDamage() {
+    return `${this.name} took damage`;
+  }
 }
+
+// CharacterStats.prototype = Object.create(GameObject.prototype);
 
 /*
   === Humanoid (Having an appearance or character resembling that of a human.) ===
@@ -48,12 +55,19 @@ this.newTakeDamage = attributes.takeDamage,
   * should inherit takeDamage() from CharacterStats
 */
 
-function Humanoid(attributes){
-team:,
-weapons:,
-language:,
-greet:
+class Humanoid extends CharacterStats {
+  constructor(attributes) {
+    super(attributes);
+    this.team = attributes.team;
+    this.weapons = attributes.weapons;
+    this.language = attributes.language;
+  }
+  greet() {
+    return `${this.name} offers a greeting in ${this.language}`;
+  }
 }
+
+// Humanoid.prototype = Object.create(CharacterStats.prototype);
 
 /*
  * Inheritance chain: GameObject -> CharacterStats -> Humanoid
@@ -105,6 +119,56 @@ const archer = new Humanoid({
   language: "Elvish"
 });
 
+class Hero extends Humanoid {
+  constructor(heroAttributes) {
+    super(heroAttributes);
+    this.superPower = heroAttributes.superPower;
+  }
+}
+
+class Villain extends Humanoid {
+  constructor(villainAttributes) {
+    super(villainAttributes);
+  }
+}
+
+// Hero.prototype = Object.create(Humanoid.prototype);
+
+// Villain.prototype = Object.create(Humanoid.prototype);
+
+// Stretch task:
+// * Create Villain and Hero constructor functions that inherit from the Humanoid constructor function.
+// * Give the Hero and Villains different methods that could be used to remove health points from objects which could result in destruction if health gets to 0 or drops below 0;
+// * Create two new objects, one a villain and one a hero and fight it out with methods!
+
+const batman = new Hero({
+  createdAt: new Date(),
+  dimensions: {
+    length: 1,
+    width: 2,
+    height: 5
+  },
+  healthPoints: 18,
+  name: "Batman",
+  team: "Arkham Knights",
+  weapons: ["Fists"],
+  language: "English"
+});
+
+const joker = new Villain({
+  createdAt: new Date(),
+  dimensions: {
+    length: 1,
+    width: 2,
+    height: 4
+  },
+  healthPoints: 15,
+  name: "The Joker",
+  team: "Arkham Villains",
+  weapons: ["Knife", "Gun"],
+  language: "English"
+});
+
 console.log(mage.createdAt); // Today's date
 console.log(archer.dimensions); // { length: 1, width: 2, height: 4 }
 console.log(swordsman.healthPoints); // 15
@@ -118,5 +182,47 @@ console.log(swordsman.destroy()); // Sir Mustachio was removed from the game.
 
 // Stretch task:
 // * Create Villain and Hero constructor functions that inherit from the Humanoid constructor function.
-// * Give the Hero and Villains different methods that could be used to remove health points from objects which could result in destruction if health gets to 0 or drops below 0;
-// * Create two new objects, one a villain and one a hero and fight it out with methods!
+// function Hero(heroAttributes) {
+//   Humanoid.call(this, heroAttributes);
+//   attack = function() {};
+// }
+
+// Hero.prototype = Object.create(Humanoid.prototype);
+
+// function Villain(villainAttributes) {
+//   Humanoid.call(this, villainAttributes);
+//   attack = function() {};
+// }
+
+// Villain.prototype = Object.create(Humanoid.prototype);
+
+// // * Give the Hero and Villains different methods that could be used to remove health points from objects which could result in destruction if health gets to 0 or drops below 0;
+// // * Create two new objects, one a villain and one a hero and fight it out with methods!
+
+// const batman = new Hero({
+//   createdAt: new Date(),
+//   dimensions: {
+//     length: 1,
+//     width: 2,
+//     height: 5
+//   },
+//   healthPoints: 18,
+//   name: "Batman",
+//   team: "Arkham Knights",
+//   weapons: ["Fists"],
+//   language: "English"
+// });
+
+// const joker = new Villain({
+//   createdAt: new Date(),
+//   dimensions: {
+//     length: 1,
+//     width: 2,
+//     height: 4
+//   },
+//   healthPoints: 15,
+//   name: "The Joker",
+//   team: "Arkham Villains",
+//   weapons: ["Knife", "Gun"],
+//   language: "English"
+// });
